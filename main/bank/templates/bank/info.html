@@ -1,0 +1,23 @@
+{% extends 'bank/base.html' %}
+
+{% block title %}
+    Info
+{% endblock title %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <a href="/createBankAcc" class="btn btn-primary">załóż konto</a>
+    <div class="bg-secondary">
+        {% for item in bankAcc  %}
+            <h5>{{item}}</h5>
+            <h5>{{item.balance}}</h5>
+            <hr>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endblock content %}
+
+
+

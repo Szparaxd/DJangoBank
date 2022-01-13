@@ -1,0 +1,14 @@
+{% extends 'bank/base.html' %}
+
+{% block title %}Logowanie{% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="post" class="from-group">
+        {% csrf_token %}
+        {{form|crispy}}
+        <p>Nie masz konta? Załóż <a href="/register">tutaj</a></p>
+        <button type="submit" class="btn btn-success">Login</button>
+    </form>
+{% endblock content %}
