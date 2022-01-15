@@ -1,0 +1,15 @@
+{% extends 'bank/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}   Pole testowe {% endblock title %}
+
+{% block content %} Strzelamy!
+
+<form action="/test/" method="post">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button type="submit" class="btn btn-success">Wyślij</button>
+
+</form>
+
+{% endblock content %}

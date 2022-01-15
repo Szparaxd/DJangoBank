@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #biblioteki
     'rest_framework',
+    'rest_framework.authtoken',
     'crispy_forms',
     'crispy_bootstrap5',
 

@@ -4,11 +4,10 @@ from .models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=False)
-
+ 
     class Meta:
         model = CustomUser
-        fields = ['username','email']
+        fields = ['username']
 
 
 class CustomUserChangeForm(UserChangeForm):

@@ -9,13 +9,35 @@
 
     {% if user.is_authenticated %}
     <a href="/createBankAcc" class="btn btn-primary">załóż konto</a>
-    <div class="bg-secondary">
+    
         {% for item in bankAcc  %}
-            <h5>{{item}}</h5>
-            <h5>{{item.balance}}</h5>
-            <hr>
+        <div class="bg-secondary p-2 m-1 rounded-3 ">
+            
+                <div class="d-flex flex-row justify-content-between bd-highlight mb-3">
+                    <h4 class='d-flex'>{{item.accName}}</h4> 
+                    <span class="fs-3">{{forloop.counter}}</span>
+                </div>
+                <h5 >{{item.accNumber}}</h5>
+                <h3 class="d-flex justify-content-end p-2">{{item.balance}} <span>{{item.waluts}}</span></h3>
+                
+                
+                <hr>
+            <div class="d-flex d-inline-block gap-1">
+                <form method='POST' action='/przelew/'>
+                    {% csrf_token %} 
+                    <input type="hidden" name="accNumber" value="{{item.accNumber}}"/>
+                    <button name='przelew' value='przelew' type="submit" class="btn btn-primary">Przelew</button> 
+                </form>
+                <form method='POST' action='/historia/'>
+                    {% csrf_token %}
+                    <input type="hidden" name="accNumber" value="{{item.accNumber}}"/>
+                <button name='historia' value='historia' type="submit" class="btn btn-primary">histioria</button> 
+                </form>
+            </div>
+        </div>
+            
         {% endfor %}
-    </div>
+    
     {% endif %}
 {% endblock content %}
 

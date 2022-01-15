@@ -1,0 +1,38 @@
+{% extends 'bank/base.html' %}
+
+{% block titile %}ReadMe{% endblock titile %}
+
+{% block content %}
+
+<div>
+    <h1>Projet Python-Bank</h1>
+    <hr>
+    <h4>Zajęcia z: "Języki programowania - Python" </h4>
+    <h4>Prowadzący: mgr Paweł Płaczek</h4>
+    <hr>
+    <h3>Opis Aplikacji</h3>
+    <p>Aplikacja ma za zadanie symulować działanie banku. Umożliwia tworzenie kont urzytkowników oraz zakładanie kont bankowych
+        oraz podstawowe operację transakcyjne.
+    </p>
+    <p>
+        Do stworzenia aplikacji został użyty <strong>Python 3.10.1</strong> oraz środowisko programistyczne <strong>Visual Studio Code</strong>.
+        Aplikacja jest oparta na bibliotece <strong>Django 4.0</strong>. Oraz dodatkowych bibliotek rozszerzających możliwości djnago.
+        <ul>
+            <li>rest_framework</li>
+            <li>rest_framework.authtoken</li>
+            <li>crispy_forms</li>
+            <li>crispy_bootstrap5</li>
+        </ul>
+
+        Aplikacja jest również backendem do aplikacji frontend'owych napisanych w React i Angular.
+    </p>
+    <hr>
+    <h3>Autorzy projektu</h3>
+    <ul>
+        <li>Nikodem Luto</li>
+        <li>Filip Mielnik</li>
+        <li>Adam Lorek</li>
+    </ul>
+</div>
+
+{% endblock content %}

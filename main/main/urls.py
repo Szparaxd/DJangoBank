@@ -32,5 +32,13 @@ urlpatterns = [
     path('info/', vBank.info, name="info"),
     path('createBankAcc/', vBank.createBankAcc, name="createBankAcc"),
 
+    path('choice/', vBank.choice, name="choice"),
+    path('przelew/', vBank.przelew, name="przelew"),
+    path('historia/', vBank.historia, name="historia"),
+
+    path('ReadMe/', vBank.readMe, name="readMe"),
+
+    
+
   
 ]

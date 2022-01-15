@@ -6,6 +6,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     
+    user_id = models.IntegerField(default=0)
     #tu moge dac klucz obcy do konta bankowego 
     #ale wtedy jedno konto do kilku userow
 
