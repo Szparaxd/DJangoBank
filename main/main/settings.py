@@ -1,3 +1,5 @@
+from celery.schedules import crontab
+
 """
 Django settings for main project.
 
@@ -152,4 +154,11 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-CELERY_BROKER_URL = 'redis://loclahost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "bank.tasks.sample_task",
+        "schedule": crontab(day_of_month="1"),
+    },
+}
