@@ -18,6 +18,7 @@ from .serializers import BankAccountSerializer, UserSerializer, GroupSerializer,
 from register.models import CustomUser
 
 from rest_framework.authtoken.models import Token
+from bank.scripts import create_new_ref_number
 
 
 
@@ -49,9 +50,7 @@ class BankAccountViewSet(viewsets.ModelViewSet):
 class CustomUserViewSet(viewsets.ViewSet):
     queryset = CustomUser.objects.all()
     serlializer_class = CustomUserSerializer()
-    
-
-
+ 
 
 @api_view(('POST',))
 def login(response):
@@ -147,6 +146,46 @@ def przelew(response):
         return Response(status=status.HTTP_200_OK)
         
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(('POST',))
+def history(response):
+    print("TEST history ")
+
+    accNumber = response.POST.get("accNumber")
+    print(accNumber)
+    
+    bank = BankAccout.objects.get(accNumber=accNumber)        
+
+    elements1 = transaction.objects.filter(fromBank=bank)
+    elements2 = transaction.objects.filter(toBank=bank)
+        
+    listBankow = []
+
+    for i in elements1:
+        listBankow.append(i)
+
+    for i in elements2:
+        listBankow.append(i)
+
+    listBankow.sort(key=lambda x: x.data)
+    listBankow.reverse()
+    serializers_obj = serializers.serialize('json', listBankow)
+    return HttpResponse(serializers_obj,status=status.HTTP_200_OK)
+
+@api_view(('POST',))
+def createBankAcc(response):
+        balance = 1000 #ToDo zmienić żeby było domyślnie 0
+        token = response.POST.get("token")
+        user = CustomUser.objects.get(auth_token = token) 
+
+        waluts = response.POST.get("waluts")
+        accName = response.POST.get("name")
+        print(str(balance) + str(user) + str(waluts))
+        obj = BankAccout(accName = accName,balance=balance, user=user, waluts=waluts, accNumber=create_new_ref_number())
+        obj.save()
+        return Response(status=status.HTTP_200_OK)
+    
+
 
     
 

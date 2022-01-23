@@ -1,3 +1,4 @@
+from django.http import response
 from django.urls import include, path
 from rest_framework import routers
 
@@ -6,7 +7,9 @@ from .views import (GroupViewSet,UserViewSet, BankAccountViewSet, CustomUserView
 createUser, 
 login,
 NumbersBankAccount,
-infoBankAcc, przelew)
+infoBankAcc, 
+przelew,
+history,createBankAcc)
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -23,5 +26,7 @@ urlpatterns = [
     path('bankNumbers/', NumbersBankAccount),
     path('infoBankAcc/', infoBankAcc),
     path('createUser/', createUser),
+    path('createBankAcc/', createBankAcc),
     path('przelew/', przelew),
+    path('history/', history),
 ]

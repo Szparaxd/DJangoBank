@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 from register.models import CustomUser
-from bank.models import BankAccout 
+from bank.models import BankAccout, transaction 
 
 User = get_user_model()
 
@@ -37,4 +37,9 @@ class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username']
+
+class TransactionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = transaction
+        field = ['id','fromBank', 'toBank', 'amount', 'currency']
         

@@ -151,3 +151,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 #przekierowanie po logowaniu i wylogowaniu
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+CELERY_BROKER_URL = 'redis://loclahost:6379'

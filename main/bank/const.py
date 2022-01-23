@@ -1,5 +1,5 @@
 WALUTS = [
-    ('PL', 'Zł'),
-    ('EUR', 'Euro'),
-    ('USD', 'Dolar'),
+    ('PLN', 'PLN'),
+    ('EUR', 'EUR'),
+    ('USD', 'USD'),
 ]

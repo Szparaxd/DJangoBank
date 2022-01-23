@@ -3,10 +3,9 @@ from urllib import request
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-import bank
 
 from register.models import CustomUser
-from .models import BankAccout, transaction
+from .models import BankAccout, transaction, get_Curs
 from .forms import CreateBankAccForm,TransactionForm
 from .scripts import create_new_ref_number
 # Create your views here.
@@ -128,4 +127,8 @@ def historia(response):
     return render(response,'bank/historia.html', {"listaBankow":listBankow, 'accNumber':bank})
 
 def readMe(response):
+    return render(response,'bank/ReadMe.html', {})
+
+def test(response):
+    get_Curs("USD")
     return render(response,'bank/ReadMe.html', {})

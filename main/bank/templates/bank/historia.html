@@ -18,10 +18,10 @@
             <tr>
             {% if item.fromBank == accNumber %}
                 <td>{{item.toBank}}</td>
-                <td class="text-success">+{{item.amount}}</td>
+                <td class="text-danger">-{{item.amount}} {{item.currency}}</td>
             {% else %}
                 <td>{{item.fromBank}}</td>
-                <td class="text-danger">-{{item.amount}}</td>
+                <td class="text-success">+{{item.amount}} {{item.currency}}</td>
             {% endif %}
 
             <td>{{item.description}}</td>

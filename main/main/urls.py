@@ -37,6 +37,7 @@ urlpatterns = [
     path('historia/', vBank.historia, name="historia"),
 
     path('ReadMe/', vBank.readMe, name="readMe"),
+    path('test/', vBank.test, name='test'),
 
     
 
