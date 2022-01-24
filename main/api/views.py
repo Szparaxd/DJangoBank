@@ -60,7 +60,7 @@ def login(response):
         username = response.POST.get("username")
         password = response.POST.get("password")
         user = authenticate(username=username,password=password)       
-        print("TEST")
+        # print("TEST") tu też
         
         if user is not None:
             
@@ -115,8 +115,9 @@ def infoBankAcc(response):
 
 @api_view(('POST',))
 def createUser(response):
-    print("CreateUser")
-    print(response.POST)
+    # print("CreateUser")
+    # print(response.POST)
+    # wykomentowałem bo sraka na testach była
     if(response.method == 'POST'):
         username = response.POST.get('username')
         email = response.POST.get('email')
@@ -127,6 +128,8 @@ def createUser(response):
                                                 password=password)
         obj.save()
         return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST )
 
 
 @api_view(('POST',))
@@ -184,6 +187,8 @@ def createBankAcc(response):
         obj = BankAccout(accName = accName,balance=balance, user=user, waluts=waluts, accNumber=create_new_ref_number())
         obj.save()
         return Response(status=status.HTTP_200_OK)
+
+
     
 
 
