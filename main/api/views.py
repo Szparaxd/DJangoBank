@@ -7,23 +7,26 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-from rest_framework import viewsets, status 
+from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.generics import CreateAPIView
 
-from django.contrib.auth.models import User
-
-from bank.models import BankAccout, transaction
+from bank.models import BankAccout, transaction, Kredyt, CyklicznePrzelewy
 from .serializers import BankAccountSerializer, UserSerializer, GroupSerializer, CustomUserSerializer
 from register.models import CustomUser
 
 from rest_framework.authtoken.models import Token
 from bank.scripts import create_new_ref_number
 
+from register.forms import CustomUserCreationForm
+
+import logging
 
 
 
 User = get_user_model()
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -45,23 +48,25 @@ class GroupViewSet(viewsets.ModelViewSet):
 class BankAccountViewSet(viewsets.ModelViewSet):
     queryset = BankAccout.objects.all()
     serializer_class = BankAccountSerializer
-
-
-class CustomUserViewSet(viewsets.ViewSet):
-    queryset = CustomUser.objects.all()
-    serlializer_class = CustomUserSerializer()
  
 
 @api_view(('POST',))
 def login(response):
 
     if(response.method == 'POST'):
-      
+        
+        print(response.POST)
         username = response.POST.get("username")
         password = response.POST.get("password")
         user = authenticate(username=username,password=password)       
+<<<<<<< HEAD
         # print("TEST") tu też
         
+=======
+        print("TEST")
+        print(user)
+    
+>>>>>>> e0e457b9bf309681b00cdf834fcc55598246dc26
         if user is not None:
             
             # A backend authenticated the credentials
@@ -78,8 +83,9 @@ def login(response):
             serializers_obj = serializers.serialize('json', [user,token])
             
             return HttpResponse(serializers_obj,status=status.HTTP_200_OK)
-   
-    return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+    errorMess = {'error':'Niepoprawne dane lub taki uzytkownik nie istnieje'}        
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(('POST',))
 def NumbersBankAccount(response):
@@ -90,7 +96,9 @@ def NumbersBankAccount(response):
         listBankAccoutn = BankAccout.objects.filter(user=user)     
         serializers_obj = serializers.serialize('json', listBankAccoutn)
         return HttpResponse(serializers_obj,status=status.HTTP_200_OK)
-    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('POST',))
@@ -109,8 +117,10 @@ def infoBankAcc(response):
                 return Response(status=status.HTTP_404_NOT_FOUND)        
         except:
             print("Except")
-            return Response(status=status.HTTP_404_NOT_FOUND)     
-    return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('POST',))
@@ -123,13 +133,14 @@ def createUser(response):
         email = response.POST.get('email')
         password = response.POST.get('password')
 
-        obj = CustomUser.objects.create_user(username=username,
-                                                email=email,
-                                                password=password)
+        obj = User.objects.create_user(username=username, password=password)
         obj.save()
         return Response(status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST )
+
+    errorMess = {'error':'Nie mozna stworzyc uzytkownika o podanych parametrach'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('POST',))
@@ -148,39 +159,42 @@ def przelew(response):
         obj.save()
         return Response(status=status.HTTP_200_OK)
         
-    return Response(status=status.HTTP_404_NOT_FOUND)
+    errorMess = {'error':'Nie udalo sie dokonac przelewu'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(('POST',))
 def history(response):
     print("TEST history ")
-
     accNumber = response.POST.get("accNumber")
     print(accNumber)
-    
     bank = BankAccout.objects.get(accNumber=accNumber)        
+    if bank is not None:
+        elements1 = transaction.objects.filter(fromBank=bank)
+        elements2 = transaction.objects.filter(toBank=bank)
+            
+        listBankow = []
 
-    elements1 = transaction.objects.filter(fromBank=bank)
-    elements2 = transaction.objects.filter(toBank=bank)
-        
-    listBankow = []
+        for i in elements1:
+            listBankow.append(i)
 
-    for i in elements1:
-        listBankow.append(i)
+        for i in elements2:
+            listBankow.append(i)
 
-    for i in elements2:
-        listBankow.append(i)
+        listBankow.sort(key=lambda x: x.data)
+        listBankow.reverse()
+        serializers_obj = serializers.serialize('json', listBankow)
+        return HttpResponse(serializers_obj,status=status.HTTP_200_OK)
 
-    listBankow.sort(key=lambda x: x.data)
-    listBankow.reverse()
-    serializers_obj = serializers.serialize('json', listBankow)
-    return HttpResponse(serializers_obj,status=status.HTTP_200_OK)
+    errorMess = {'error':'Nie znaleziono konta z takim numerem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(('POST',))
 def createBankAcc(response):
-        balance = 1000 #ToDo zmienić żeby było domyślnie 0
-        token = response.POST.get("token")
-        user = CustomUser.objects.get(auth_token = token) 
+    balance = 1000 #ToDo zmienić żeby było domyślnie 0
+    token = response.POST.get("token")
+    user = CustomUser.objects.get(auth_token = token) 
 
+    if user is not None:
         waluts = response.POST.get("waluts")
         accName = response.POST.get("name")
         print(str(balance) + str(user) + str(waluts))
@@ -190,6 +204,72 @@ def createBankAcc(response):
 
 
     
+    errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(('POST',))
+def przelewyCykliczne(response):
+    _ile = response.POST.get("amount")
+    _doKonta = response.POST.get("toNumberAcc")
+    _zKonta = response.POST.Get("fromNumberAcc")
+    _token = response.POST.get("token")
+
+    user = CustomUser.objects.get(auth_token = _token)
+    if user is not None:
+        fromKonto = BankAccout.objects.get(accNumber = _zKonta)
+        toKonto = BankAccout.objects.get(accNumber = _doKonta)
+
+        obj = CyklicznePrzelewy.objects.create(
+            zJakiegoKonta = fromKonto,
+            ile = _ile,
+            naJakieKonto = _doKonta
+        )
+
+        obj.save()
+        return Response(status=status.HTTP_200_OK)
+    
+    errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(('POST',))
+def bankomat(response):
+    _token = response.POST.get("token")
+    _nrKonta = response.POST.get("numberAcc")
+    _amount = response.POST.get("amount")
+
+    user = CustomUser.objects.get(auth_token= _token)
+
+    if user is not None:
+        konto = BankAccout.objects.get(accNumber = _nrKonta)
+        konto.withDrawnBalance(_amount)
+        konto.save()
+
+    errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(('POST',))
+def wplatomat(response):
+    _token = response.POST.get("token")
+    _nrKonta = response.POST.get("numberAcc")
+    _amount = response.POST.get("amount")
+
+    user = CustomUser.objects.get(auth_token= _token)
+
+    if user is not None:
+        konto = BankAccout.objects.get(accNumber = _nrKonta)
+        konto.addBalance(_amount)
+        konto.save()
+
+    errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
+    return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
+
+
+    
+
+
+
+
 
 
     

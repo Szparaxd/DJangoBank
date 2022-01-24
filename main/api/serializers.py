@@ -1,3 +1,4 @@
+from asyncore import write
 from dataclasses import field
 from operator import truediv
 from urllib import request
@@ -37,6 +38,7 @@ class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username']
+
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
