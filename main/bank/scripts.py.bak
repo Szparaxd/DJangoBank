@@ -6,6 +6,7 @@ from .models import BankAccout
 def create_new_ref_number():
       print("Test: create_new_ref_number")
       banki = BankAccout.objects.all().values_list('accNumber',flat=True)
+      print("Numery banków:")
       print(banki)
       wynik = True
       while wynik:

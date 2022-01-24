@@ -65,6 +65,16 @@ class Kredyt(models.Model):
     konto = models.ForeignKey(BankAccout, on_delete=CASCADE, related_name='bankAcc')
     kosztMiesieczny = models.FloatField()
 
+class CyklicznePrzelewy(models.Model):
+    zJakiegoKonta = models.ForeignKey(BankAccout, on_delete=CASCADE, related_name='fromBankAcc')
+    ile = models.FloatField()
+    naJakieKonto = models.ForeignKey(BankAccout, on_delete=CASCADE, related_name='toBankAcc')
+
+    def execute(self):
+        self.zJakiegoKonta.withDrawnBalance(self.ile)
+        self.naJakieKonto.addBalance(self.ile)
+
+
 class transaction(models.Model):
     fromBank = models.ForeignKey(BankAccout, on_delete=CASCADE, related_name="fromBank") 
     toBank = models.ForeignKey(BankAccout, on_delete=CASCADE, related_name="toBank")
