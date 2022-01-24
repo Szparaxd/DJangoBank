@@ -176,19 +176,25 @@ import os
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+    },
     'handlers': {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'debug.log',
+            'formatter':'simpleRe',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
+    'formatters':{
+        'simpleRe':{
+            'format': '{levelname} {asctime} {message}',
+            'style':'{',
+        }
+    }
+    
 }

@@ -59,7 +59,7 @@ class BankAccout(models.Model):
         return dict
 
 class Kredyt(models.Model):
-    start = models.DateTimeField(default=datetime.now)
+    start = models.DateTimeField(default=datetime.now, blank=True)
     kwota = models.FloatField()
     iloscMiesiecy = models.IntegerField()
     konto = models.ForeignKey(BankAccout, on_delete=CASCADE, related_name='bankAcc')

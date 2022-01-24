@@ -4,7 +4,7 @@ from rest_framework import routers
 
 from register.models import CustomUser
 from .views import (GroupViewSet,UserViewSet, BankAccountViewSet,
-createUser, 
+createUser, kredyt, 
 login,
 NumbersBankAccount,
 infoBankAcc, 
@@ -30,5 +30,7 @@ urlpatterns = [
     path('history/', history),
     path('cyklicznyPrzelew/', przelewyCykliczne),
     path('bankomat/',bankomat ),
-    path('wplatomat', wplatomat)
+    path('wplatomat/', wplatomat),
+    path('kredyt/', kredyt)
+
 ]
