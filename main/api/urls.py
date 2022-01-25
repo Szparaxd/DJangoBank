@@ -21,22 +21,15 @@ urlpatterns = [
     path('test/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('login/', login),
-<<<<<<< HEAD
+    path('przelew/', przelew, name='przelew'),
+    path('cyklicznyPrzelew/', przelewyCykliczne, name='przelewyCykliczne'),
+    path('bankomat/',bankomat ,name='bankomat' ),
+    path('wplatomat/', wplatomat, name='wplatomat'),
     path('bankNumbers/', NumbersBankAccount, name='bankNumbers'),
     path('infoBankAcc/', infoBankAcc, name='infoBankAcc'),
     path('createUser/', createUser, name='createUser'),
     path('createBankAcc/', createBankAcc, name='createBankAcc'),
-    path('przelew/', przelew, name='przelew'),
     path('history/', history, name='history'),
-=======
-    path('bankNumbers/', NumbersBankAccount),
-    path('infoBankAcc/', infoBankAcc),
-    path('createUser/', createUser),
-    path('createBankAcc/', createBankAcc),
-    path('przelew/', przelew),
-    path('history/', history),
-    path('cyklicznyPrzelew/', przelewyCykliczne),
-    path('bankomat/',bankomat ),
-    path('wplatomat', wplatomat)
->>>>>>> e0e457b9bf309681b00cdf834fcc55598246dc26
-]
+    ]
+
+

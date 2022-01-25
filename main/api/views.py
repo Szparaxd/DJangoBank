@@ -59,14 +59,8 @@ def login(response):
         username = response.POST.get("username")
         password = response.POST.get("password")
         user = authenticate(username=username,password=password)       
-<<<<<<< HEAD
         # print("TEST") tu też
         
-=======
-        print("TEST")
-        print(user)
-    
->>>>>>> e0e457b9bf309681b00cdf834fcc55598246dc26
         if user is not None:
             
             # A backend authenticated the credentials
@@ -136,8 +130,6 @@ def createUser(response):
         obj = User.objects.create_user(username=username, password=password)
         obj.save()
         return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST )
 
     errorMess = {'error':'Nie mozna stworzyc uzytkownika o podanych parametrach'}
     return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
@@ -244,6 +236,7 @@ def bankomat(response):
         konto = BankAccout.objects.get(accNumber = _nrKonta)
         konto.withDrawnBalance(_amount)
         konto.save()
+        return Response(status=status.HTTP_200_OK)
 
     errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
     return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
@@ -260,6 +253,7 @@ def wplatomat(response):
         konto = BankAccout.objects.get(accNumber = _nrKonta)
         konto.addBalance(_amount)
         konto.save()
+        return Response(status=status.HTTP_200_OK)
 
     errorMess = {'error':'Nie znaleziono użytkownika z takim tokenem'}
     return Response(errorMess,status=status.HTTP_400_BAD_REQUEST)
