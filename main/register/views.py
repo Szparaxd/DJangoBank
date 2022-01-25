@@ -21,3 +21,18 @@ def SignUpViev(response):
     else:
         form = UserCreationForm()
         return render(response,'registration/signup.html', {"form":form})
+
+def Bankomat(response):
+    if response.method == 'POST':
+        print(response.POST)
+        form = CustomUserCreationForm(response.POST)
+        print("CLEANED DATA----------------------------------:")
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect("/")
+        return render(response,'registration/signup.html', {"form":form})
+
+    else:
+        form = UserCreationForm()
+        return render(response,'registration/signup.html', {"form":form})

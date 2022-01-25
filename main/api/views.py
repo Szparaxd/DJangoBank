@@ -61,12 +61,8 @@ def login(response):
         username = response.POST.get("username")
         password = response.POST.get("password")
         user = authenticate(username=username,password=password)       
-<<<<<<< HEAD
         # print("TEST") tu też
         
-=======
-    
->>>>>>> 7bfd8deba4fb675e86c814995ffdcbf478909d6d
         if user is not None:
             
             # A backend authenticated the credentials
@@ -128,15 +124,9 @@ def infoBankAcc(response):
 
 @api_view(('POST',))
 def createUser(response):
-<<<<<<< HEAD
     # print("CreateUser")
     # print(response.POST)
     # wykomentowałem bo sraka na testach była
-=======
-    logger.info('api_view: createUser')
-    logger.info(response.POST)
-
->>>>>>> 7bfd8deba4fb675e86c814995ffdcbf478909d6d
     if(response.method == 'POST'):
         username = response.POST.get('username')
         email = response.POST.get('email')
