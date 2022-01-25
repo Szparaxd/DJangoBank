@@ -3,7 +3,7 @@ from django.urls import include, path
 from rest_framework import routers
 from register.models import CustomUser
 from .views import (GroupViewSet,UserViewSet, BankAccountViewSet,
-createUser, 
+createUser, kredyt, 
 login,
 NumbersBankAccount,
 infoBankAcc, 
@@ -21,6 +21,7 @@ urlpatterns = [
     path('test/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('login/', login),
+<<<<<<< HEAD
     path('przelew/', przelew, name='przelew'),
     path('cyklicznyPrzelew/', przelewyCykliczne, name='przelewyCykliczne'),
     path('bankomat/',bankomat ,name='bankomat' ),
@@ -33,3 +34,17 @@ urlpatterns = [
     ]
 
 
+=======
+    path('bankNumbers/', NumbersBankAccount),
+    path('infoBankAcc/', infoBankAcc),
+    path('createUser/', createUser),
+    path('createBankAcc/', createBankAcc),
+    path('przelew/', przelew),
+    path('history/', history),
+    path('cyklicznyPrzelew/', przelewyCykliczne),
+    path('bankomat/',bankomat ),
+    path('wplatomat/', wplatomat),
+    path('kredyt/', kredyt)
+
+]
+>>>>>>> 7bfd8deba4fb675e86c814995ffdcbf478909d6d
